@@ -12,7 +12,7 @@ typedef struct lifo
 
 void stack_init (stack_t *pS)
 {
-	/* sP->top points to the last element pushed in.
+	/* pS->top points to the last element pushed in.
 	 * Initially -1 */
 	pS->top = -1;
 }
