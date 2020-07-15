@@ -205,3 +205,82 @@ Some of the questions for Embedded Programmers
     
     </details>
     
+14. How to Detect, Debug and Prevent Stack-overflow ?
+
+    <details><summary>Click for answer!</summary>
+    <br />    
+    
+    The below article assumes person reading will have prior understading of stack implementation - which include local variables, their memory allocation and how stack works.
+    
+    **Stackoverflow** <br />
+    Let's consider we have stack of 1024 bytes allocated in our project.
+    
+    Now let's consider an example <br />
+    <br />
+    void foo(void) {<br />
+        int x[1024] = {0};<br />
+        int y = 10;<br />
+        int z = 5;<br />
+        :<br />
+        :<br />
+    }<br />
+
+    When function *foo* is called, variable x is allocated onto stack which consumes 1024 bytes. Assuming working with single stack, there is already stack corruption happened as before entering the function stack *PUSH* has happened and tehe subsequent varaible allocation (y and z) goes onto overwrite the adjacent memory regions. Which is formally referred to as *Stackoverflow*.
+    <br />
+    
+    **Stackoverflow detection**
+    1.  *Using debugger* <br />
+        <br />
+        Debuggers allow us to set breakpoints based on register value. Whenever stack pointer register hits the lower bound of stack address, debugger stops and we can get to know that the stack is filled up at some point of code execution. Then if you step over, in very few steps you will probably run into the run-time error which confirms the stack overflow condition. 
+        <br />
+        So once you are sure the problem is on stack allocation, just double the stack size and see if that fixes-up the issue. If not, that means your bug is someplace else in your code!.
+
+    2.  *Using an MMU or MPU* <br />
+        <br />
+        If processor supports Memory Management Unit(MMU) or a Memory Protection Unit (MPU), then these special hardware devices integrated alongside the CPU can be configured to detect when a task attempts to access invalid memory locations, whether code, data, or stack.
+
+    3.  *Using a CPU with stack overflow detection* <br />
+        <br />
+        Some processors, however, do have simple stack pointer overflow detection registers. When the CPU's stack pointer goes below the value set in this register, an exception is generated and the exception handler ensures that the offending code does not do further damage (possibly issue a warning about the faulty code). It's the OS which takes care of CPU's stack overflow detection register is written with a proper value for a given task/thread during context switches.
+
+    4.  *Software-based stack overflow detection* <br />
+        <br />
+        Whenever OS switches from one task to another, it calls a *hook* function which allows programmer to extend the capabilities of the context switch function. 
+        <br />
+        Before a task is *switched* in, the *hook* code should ensure that the stack pointer to load into the CPU does not the exceed the *limit* value present task TCB.
+
+    5.  *Counting the amount of free stack space* <br />
+        <br />
+        Another way to check for stack overflows is to allocate more stack space than is anticipated to be used for the stack, then, monitor and possibly display actual maximum stack usage at run-time. <br />
+        <br />
+        First, the task stack needs to be cleared (i.e., filled with zeros) when the task is created. Next, a low priority task *walks the stack* of each task created, from the bottom towards the top, counting the number of zeros entries. When the task finds a non-zero value, the process is stopeed and the usage of the stack can be computed (in number of bytes used or as a percentage). Then, adjust the size of the stacks (by recompiling the code) to allocate a more *reasonable* value (either increase or decrease the amount of stack space for each task). For this to be effective, however, run the application long enough for the stack to grow to its highest value.
+        <br />
+
+    **Best Practices to avoid stack overflows**
+    1.  *Don't allocate arrays on the stack* <br />
+        <br />
+        It's always a good idea to not declare arrays on the stack.<br />
+        If you need to limit the access to an array to only with a function, then declare it as local static then the compiler will allocate the array outside the stack.
+
+    2.  *Pass pointers instead of big structures to functions*<br />
+        <br />
+        If a structure contains a big array member and if passed directly to a function, the program will certainly crash as a copy of the entire struct will be made and this copy will be sent to the function and the function will try to allocate this copy on the stack.
+        <br />
+        Instead, it's a better idea to pass it as a pointer. However care should be taken if values should not be changed inside a function by using *const* qualifier.
+
+    3.  *Avoid recursive functions*<br />
+        <br />
+        Recursive functions are functions that all themselves.<br />
+        A recursive function with large local array variable, when called itself multiple times may result in stack overflow.
+
+    4.  *What not keep all varibale global?* <br />
+        <br />
+        -   **Pushing and Popping data in and out of stack can help reduce the RAM usage as compared to keeping everything global**. When RAM consuption goes up with a function call, the function return would bring back RAM consumption back to the original value as it was before function call.
+        -   If everything is kept global, it will **pollute the namespace** as each global variable name should be unique.
+        
+        
+    
+
+
+
+
