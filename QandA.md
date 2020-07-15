@@ -3,7 +3,7 @@ Some of the questions for Embedded Programmers
 1. Using #define statement, how would you declare a manifest constant that returns the number of seconds in a year? Disregard leap years in your answer.
 
     <details><summary>Click for answer!</summary>
-
+    <br />
     #define SECONDS_PER_YEAR (365UL * 24UL * 60UL * 60UL)
 
     </details>
@@ -11,7 +11,7 @@ Some of the questions for Embedded Programmers
 2. Write a 'standard' MIN macro. That is, a macro that takes two arguments and returns the smaller of the two arguments.
 
     <details><summary>Click for answer!</summary>
-
+    <br />
     #define MIN(A, B) ((A) < (B) ? (A) : (B))
     
     </details>
@@ -26,7 +26,7 @@ Some of the questions for Embedded Programmers
         3.7 A pointer to a funtion that takes an integer argument and return an integer <br />
         3.8 An array of ten pointers to functions that take an integer argument and return an integer <br />
     <details><summary>Click for answer!</summary>
-
+    <br />
     3.1 int a; <br />
     3.2 int *a; <br />
     3.3 int **a; <br />
@@ -41,7 +41,7 @@ Some of the questions for Embedded Programmers
 4. What are the uses of the keyword **static**
 
     <details><summary>Click for answer!</summary>
-
+    <br />
     a. A variable declared static within the body of a function maintains its value between function invocations. <br />
     b. A variable declared static within a module (but outside the body of a function) is accessible by all functions  <br />
        within that module. It is not accessible by function within any other module. That is, it is a localized global. <br />
@@ -53,7 +53,7 @@ Some of the questions for Embedded Programmers
 5. What does the keyword **const** mean?
 
     <details><summary>Click for answer!</summary>
-
+    <br />
     const means "read-only" <br />
   
     a. const int a; and int const a; <br /> 
@@ -71,7 +71,7 @@ Some of the questions for Embedded Programmers
 6. What does the keyword **volatile** mean?
 
     <details><summary>Click for answer!</summary>
-
+    <br />
     A volatile variable is one that can change unexpectedly. Consequently, the compiler can make no assumptions about <br />
     the value of the variable. In particular, the optimizer must be careful to reload the variable every time it is  <br />
     used instead of holding a copy in a register. <br />
@@ -90,7 +90,7 @@ Some of the questions for Embedded Programmers
     7.b Clear bit 3 of a  <br />
     
     <details><summary>Click for answer!</summary>
-
+    <br />
     #define BIT3 (0x1 << 3) <br />
     7.a <br />
       int set_bit3(int a) <br />
@@ -115,7 +115,7 @@ Some of the questions for Embedded Programmers
     }   <br />
     
     <details><summary>Click for answer!</summary>
-
+    <br />
     The expression involving signed and unsigned types have all operands promoted to unsigned types. <br />
     Thus -20 becomes a very large positive integer and the expression evaluates to greater than 6. <br />
 
@@ -126,7 +126,7 @@ Some of the questions for Embedded Programmers
     typedef struct s * tPS;   <br />
     
     <details><summary>Click for answer!</summary>
-
+    <br />
     Consider the following declarations: <br />
     
     dPS p1, p2; <br />
@@ -139,3 +139,69 @@ Some of the questions for Embedded Programmers
     However, the second one correctly defines p3 & p4 to be pointers to structre s. <br />
 
     </details>
+
+10. **Wild** pointers?
+
+    <details><summary>Click for answer!</summary>
+    <br />    
+    Pointers that store addresses of memory that have not yet been initialized are referred to as *wild* pointers. <br />
+    
+    After memory is allocated, but used before it is initialized properly, the content of that memory is usually random-unknown junk values. <br />
+    Consequently, interesting things may or may not occur - especialy on different platforms.
+    
+    </details>
+    
+11. **Dangling** pointers?
+
+    <details><summary>Click for answer!</summary>
+    <br />    
+    Pointers that store addresses of memory that has been freed are referred to as *dangling* pointers.
+    
+    A reference to an address that has been deallocated has non-deterministic consequences: the operating system may <br />
+    - still flag that memory as allocated, so no issues occur,
+    - cause the program to crash, or
+    - have reallocated that memory to the same task, but it is now being used for a different purpose(most detrimental, as the other data structure can be corrupted).
+    
+    Avoiding dangling pointers can be solved by always assigning a pointer the value **NULL** after the memory has been freed: <br />
+    <br />
+        **free(ptr);** <br />
+        **ptr = NULL;**
+
+    </details>
+
+12. What happens if same memory being freed multiple times?
+
+    <details><summary>Click for answer!</summary>
+    <br />
+    One possible consequence of dangling pointer is that they may be freed multiple times. This can have different results: <br />
+    - the allocator will cause the program to stop execution.
+    - the memory may have since been allocated again, in which case, you would free memory that was not meant to be freed, or
+    - *head corruption* -- the heap is in an inconsistent state and operations that manage it will be unpredictable.
+    
+    <br />
+    Again this is a matter that can be resolved by having as few persistent variable storing addresses and ensuring that when <br/>
+    a call to **free(...)** is made, all of those variables must be set to *NULL*.
+    
+    </details>
+    
+13. What is **memory leak** ?
+
+    <details><summary>Click for answer!</summary>
+    <br />    
+    Memory that is allocated but not appropriately deallocated when it is no longer needed; that is, a *memory leak*.
+    
+    The primary cause of a memory leak is when the last reference to memory is lost by the application. In C and C++ this may happen in one of two ways:
+    - The last pointer assigned the memory location is a local variable that then goes out of scope (often when a fuction returns), or
+    - The last pointer (local, member or global) assigned the memory location is overwritten.
+    <br />
+    
+    In either case, because the last value storing the address is lost, it is now impossible to call *free(...)* or *delete ...*  to indicate the operating system that the memory is no longer required. Consequently, as long as the application is running, the operating system will simply assume that the memory is being used by the application.
+    
+    Memory leak can be more serious than one in an application being run:
+    - in an embedded system when memory is more limited as compared to what one would expect from a desktop or laptop system,
+    - in an embedded system that is meant to execute for an extended period of time (even years),
+    - when memory may be shared by multiple processes and where the termination of one of these processes does not necessarily cause the memory to be collected, and 
+    - in a device driver
+    
+    </details>
+    
