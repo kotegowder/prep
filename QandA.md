@@ -83,6 +83,69 @@ Some of the questions for Embedded Programmers
         Example is a read only status register. It is volatile because it can change unexpectedly. It is const because <br />
         the program should not attempt to modify it. <br />
 
+    Consider the following example code: <br />
+
+    ~~~
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <pthread.h>
+
+    int global_variable = 0;
+    void read_global( void * );
+    void write_global( void * );
+
+    int main( void ) {
+        pthread_t thread1, thread2;
+        pthread_create( &thread1, NULL, (void *) &read_global, NULL );
+        pthread_create( &thread2, NULL, (void *) &write_global, NULL );
+        pthread_join(thread1, NULL);
+        pthread_join(thread2, NULL);
+        printf( "Exiting main...\n" );
+        return EXIT_SUCCESS;
+    }
+
+    void write_global( void *void_arg ) {
+        int i;
+        for ( i = 3; i >= 0; --i ) {
+            printf( "%d\n", i );
+            sleep( 1 );
+        }
+        global_variable = 1;
+        printf( "Exiting writer...\n" );
+    }
+
+    void read_global( void * void_arg ) {
+        while ( global_variable == 0 ) {
+            // Do nothing
+        }
+        sleep( 1 );
+        printf( "Exiting reader...\n" );
+    }
+    ~~~
+
+    Below is the snippet of assembly part for **read_global** function when built with and without optimization.
+    
+    ~~~
+    Without optimization:                                                       With optimization:
+
+                                                                                    ldr     r3, .L7
+                                                                                    ldr     r3, [r3]
+    .L2:                                                                        .L2:
+        ldr     r3, .L7     // r3 will have address of global_variable              cmp r3, #0
+        ldr     r3, [r3]                                                            beq .L2
+        cmp     r3, #0
+        beq     .L2
+
+    ~~~
+
+    So what happend when optimization is enabled? <br />
+    <br />
+    Compiler thinks, after all, nothing in the body of while loop in **read_global** funtion is changing the value of the variable, so why check it each time? The problem is, the variable is being changed, but not in this loop. We must give the optiizer a hint that the varibale *golbal_variable* may change elsewhere, and do so by flagging it as **volatile**.
+    <br /> <br />
+    **volatile** int global_variable = 0;
+    
+    Now the code executes as expected. 
+    
     </details>
 
 7.  Bit Manipulation  <br />
