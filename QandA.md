@@ -278,7 +278,17 @@ Some of the questions for Embedded Programmers
         -   **Pushing and Popping data in and out of stack can help reduce the RAM usage as compared to keeping everything global**. When RAM consuption goes up with a function call, the function return would bring back RAM consumption back to the original value as it was before function call.
         -   If everything is kept global, it will **pollute the namespace** as each global variable name should be unique.
         
-        
+    </details>
+
+15. What is buffer overflow?
+
+    <details><summary>Click for answer!</summary>
+    <br />
+    
+    Very similar to stack overflow, where one writes to an array pass its end.
+
+    </details>
+    
     
 
 
