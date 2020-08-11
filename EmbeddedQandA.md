@@ -360,12 +360,17 @@ Some of the questions for Embedded Programmers
     ~~~
     Very high speed memory that supplies the most recently used instructions and/or data to the CPU with few if any wait states. 
     
-    There are three different categories, graded in levels: L1, L2 and L3. L2 cache is generally built into the processor chip and is the smallest in size.
-    However, it is also the fastest type of memory for the CPU to read. Multi-core CPUs will generally have a seperate L1 cache for each core.
+    There are three different categories, graded in levels: L1, L2 and L3. L2 cache is generally built into the processor chip 
+    and is the smallest in size.
+    However, it is also the fastest type of memory for the CPU to read. Multi-core CPUs will generally have a seperate L1 cache
+    for each core.
 
     L2 and L3 caches are larger than L1, but take longer to access. 
 
-    Cache memory generally tends to operate in a number of different configurations: *direct mapping*, *fully associative mapping* and *set associative mapping*.
+    Cache memory generally tends to operate in a number of different configurations:
+    - direct mapping
+    - fully associative mapping
+    - set associative mapping
     
     ~~~
 
