@@ -36,15 +36,15 @@ char *add_strings(char *num1, char *num2)
 	}
 
 	if (carry)
-		*retPtr = carry + '0';
+		*--retPtr = carry + '0';
 
 	return (retPtr);
 }
 
 int main()
 {
-	char num1[LIMIT/2];
-	char num2[LIMIT/2];
+	char num1[LIMIT-1];
+	char num2[LIMIT-1];
 
 	printf("Enter numner 1 : ");
 	scanf("%s", num1);
