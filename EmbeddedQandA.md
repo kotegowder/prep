@@ -382,11 +382,27 @@ Some of the questions for Embedded Programmers
     cache for each core.
 
     L2 and L3 caches are larger than L1, but take longer to access. 
-
+    ~~~
+    
+    ~~~
     Cache memory generally tends to operate in a number of different configurations:
     - direct mapping
     - fully associative mapping
     - set associative mapping
+    ~~~
+    
+    ~~~
+    Cache write policies
+        -   Write-Through
+                Always write data to cache and to memory(through cache)
+                Forces cache and memory to always be consistent
+                Slow - every memory access is long
+        -   Write-Back 
+                Write data only to cache, then update memory when block is removed
+                Allows cache and memory to be inconsistent
+                Multiple writes collected in cache; single write to memory per block
+                Dirty bit - extra bit per cache row that is set if block was written to("is dirty") and needs to be written back
+            
     
     ~~~
 
