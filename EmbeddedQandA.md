@@ -351,19 +351,35 @@ Some of the questions for Embedded Programmers
     Very similar to stack overflow, where one writes to an array pass its end.
 
     </details>
+
+16. Temporal and Spatial locality
+
+    <details><summary>Click for answer!</summary>
+    <br />
+
+    ~~~
+    The principle of temporal locality, which states that a memory location that has been recently accessed is likely
+    to be accessed in the near future.
     
-16. **Cache**
+    The principle of spatial locality, which states that a memory location close to one that has been recently accessed
+    is likely to be accessed in the near future.
+    ~~~
+    
+    </details>
+
+17. **Cache**
 
     <details><summary>Click for answer!</summary>
     <br />
     
     ~~~
-    Very high speed memory that supplies the most recently used instructions and/or data to the CPU with few if any wait states. 
+    Very high speed memory that supplies the most recently used instructions and/or data to the CPU with few if any wait
+    states. 
     
-    There are three different categories, graded in levels: L1, L2 and L3. L2 cache is generally built into the processor chip 
-    and is the smallest in size.
-    However, it is also the fastest type of memory for the CPU to read. Multi-core CPUs will generally have a seperate L1 cache
-    for each core.
+    There are three different categories, graded in levels: L1, L2 and L3. L1 cache is generally built into the processor
+    chip and is the smallest in size.
+    However, it is also the fastest type of memory for the CPU to read. Multi-core CPUs will generally have a seperate L1
+    cache for each core.
 
     L2 and L3 caches are larger than L1, but take longer to access. 
 
