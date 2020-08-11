@@ -140,7 +140,7 @@ Some of the questions for Embedded Programmers
 
     So what happend when optimization is enabled? <br />
     <br />
-    Compiler thinks, after all, nothing in the body of while loop in **read_global** funtion is changing the value of the variable, so why check it each time? The problem is, the variable is being changed, but not in this loop. We must give the optiizer a hint that the varibale *golbal_variable* may change elsewhere, and do so by flagging it as **volatile**.
+    Compiler thinks, after all, nothing in the body of while loop in **read_global** funtion is changing the value of the variable, so why check it each time? The problem is, the variable is being changed, but not in this loop. We must give the optimizer a hint that the varibale *golbal_variable* may change elsewhere, and do so by flagging it as **volatile**.
     <br /> <br />
     **volatile** int global_variable = 0;
     
@@ -352,8 +352,14 @@ Some of the questions for Embedded Programmers
 
     </details>
     
+16. **Cache**
+
+    <details><summary>Click for answer!</summary>
+    <br />
     
+    ~~~
+    Very high speed memory that supplies the most recently used instructions and/or data to the CPU with few if any wait states. 
+    ~~~
 
-
-
+    </details>
 
