@@ -22,8 +22,8 @@ int isPangram(char *s)
 	}
 
 	idx = 0;
-	while(idx <= 12) {
-		if (alphabets[idx] ^ alphabets[26-idx-1])
+	while(idx < 26) {
+		if (alphabets[idx] != '-')
 			return -1;
 		idx++;
 	}
