@@ -4,6 +4,7 @@ Some of the crypto items
 
 	<details><summary>Click for answer!</summary>
 
+	~~~
 	a.	Person A has been given two keys. One of A's keys is called a Public Key, the other is called a Private Key.
 
 	b.	A's Co-workers B, C and D.
@@ -20,8 +21,9 @@ Some of the crypto items
 
 	f.	With his Private Key and right software, person A can put digital signature on documents and other data.<br /> 
 
-		A digital signature is a **stamp** person A places on the data which is unique to him, and is very difficult to <br /> 
-		forge. In addition, the signature assures that any changes made to the data that has been signed can not go undetected.
+		A digital signature is a stamp person A places on the data which is unique to him, and is very difficult to 
+		forge. In addition, the signature assures that any changes made to the data that has been signed can not go 
+		undetected.
 
 	g.	To sign a document, person A's software will crunch down the data into just a few lines by a process called **hashing**.<br /> 
 		These few lines are called a **message digest**. Note that it is not possible to change a message digest back into the <br /> 
@@ -36,8 +38,8 @@ Some of the crypto items
 	k.	First, person B's software decrypts the signature (using person A's Public Key) changing it back into a message digest. <br /> 
 		If this worked, then it proves that person A signed the document, because only person A has his Private Key. 
 
-		Person B's software then hashes the document data into a message digest. If the message digest is same as the message digest <br /> 
-		created when the signature was decrypted, then person B knows that the signed data has not been changed.
+		Person B's software then hashes the document data into a message digest. If the message digest is same as the
+		message digest created when the signature was decrypted, then person B knows that the signed data has not been changed.
 
 	l.	Person C (dissatisfied employee) wished to deceive person B. Person C makes sure that person B receives a signed message and a <br /> 
 		Public Key that appears to belong to person A. Without person B knowledge, person C deceitfully send a key pair he created using <br /> 
@@ -56,11 +58,13 @@ Some of the crypto items
 		To certify the signature on the document, person B's software first uses person D's (the certificate authorities) public key to <br />
 		check the signature on perons A's certificate. Successfull decryption of the certificate proves that person D created it.
 
-		After the certificate is decrypted, person B's software can check if person A is in good standing with the certificate authority < br />
-		and that all of the certificate information concerning A's identity has not been altered.
+		After the certificate is decrypted, person B's software can check if person A is in good standing with the 
+		certificate authority and that all of the certificate information concerning A's identity has not been altered.
 
-		Person B's software then takes A's public key from the certificate and uses it to check A's signature. If A's public key decrypts <br />
-		the signature successfully, then person B is assured that the signature was created using A's private key, for person D has certified <br />
-		the matching public key. And of course, if the signature is valid, then we know that person C didn't try to change the signed content.
+		Person B's software then takes A's public key from the certificate and uses it to check A's signature. 
+		If A's public key decrypts the signature successfully, then person B is assured that the signature was 
+		created using A's private key, for person D has certified the matching public key. And of course, if the 
+		signature is valid, then we know that person C didn't try to change the signed content.
+	~~~
 
 	</details/
